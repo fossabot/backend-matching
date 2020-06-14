@@ -44,13 +44,7 @@ async function bootstrap() {
   app.use(helmet());
 
   /* Swagger */
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Matching API')
-    .setDescription(
-      'Microservice which handles the matching functionality of the impAct platform.'
-    )
-    .setVersion('0.0.1')
-    .build();
+  const swaggerConfig = new DocumentBuilder().setTitle('Matching API').setDescription('Microservice which handles the matching functionality of the impAct platform.').setVersion('0.0.1').build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
 

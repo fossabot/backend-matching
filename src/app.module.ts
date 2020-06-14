@@ -1,8 +1,10 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -24,9 +26,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           logging: configService.get<boolean>('DB_LOGGING')
         } as TypeOrmModuleOptions;
       }
-    })
+    }),
+    HttpModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService, AuthService]
 })
 export class AppModule {}

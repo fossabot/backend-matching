@@ -1,20 +1,20 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import * as fsj from 'fs-jetpack';
-
+import { AuthService } from '../../src/auth/auth.service';
 /**
  * This class defines jwt passport strategy.
  */
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor() {
+  constructor(private authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      // secretOrKey: `${fsj.read(fsj.cwd())}/config/auth/signingKey.pem`
-      secretOrKey: fsj.read('C:/Users/Tobi/Desktop/WebDev/Projekte/impact/oauth/config/auth/signingKey.pem')
+      secretOrKey: authService.getSigningKey()
     });
+
+    console.log(authService.getSigningKey());
   }
 
   /**
