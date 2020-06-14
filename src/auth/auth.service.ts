@@ -11,28 +11,23 @@ export class AuthService {
     this.http = axios.create();
   }
 
-  getSigningKey(): string {
-    return this.http
-      .get(this.configService.get<string>('AUTH_JWKS_URI'))
-      .then((res) => {
-        if (res.status === 200) {
-          const key = res.data.keys.filter((key) => {
-            if (key.kid === this.configService.get<string>('AUTH_JWK_KID')) {
-              return true;
-            }
-          });
+  async getSigningKey(): Promise<string> {
+    const jwks = await this.http.get(this.configService.get<string>('AUTH_JWKS_URI'));
 
-          if (key.length === 1) {
-            return jwkToPem(key[0]);
-          } else {
-            throw new InternalServerErrorException('Verification of the JWT could not be performed successfully.');
-          }
-        } else {
-          throw new InternalServerErrorException('Verification of the JWT could not be performed successfully.');
+    if (jwks.status === 200) {
+      const key = jwks.data.keys.filter((key) => {
+        if (key.kid === this.configService.get<string>('AUTH_JWK_KID')) {
+          return true;
         }
-      })
-      .catch((err) => {
-        throw new InternalServerErrorException('Verification of the JWT could not be performed successfully.');
       });
+
+      if (key.length === 1) {
+        return jwkToPem(key[0]);
+      } else {
+        throw new InternalServerErrorException('Verification of the JWT could not be performed successfully.');
+      }
+    } else {
+      throw new InternalServerErrorException('Verification of the JWT could not be performed successfully.');
+    }
   }
 }

@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
     JwtModule.registerAsync({
       inject: [AuthService],
       useFactory: async (authService: AuthService) => ({
-        publicKey: authService.getSigningKey()
+        publicKey: await authService.getSigningKey()
       })
     })
   ],
