@@ -37,3 +37,4 @@ test
 # Custom
 config/auth/signingKey.pem
 config/environments/local.env
+config/environments/local.template.env

@@ -10,3 +10,6 @@ Under config/environments, you have to rename *local.template.env* to *local.env
 
 ## OpenAPI / Swagger
 Swagger UI automatically runs under /api.
+
+## Database schema
+If dependencies are installed all entities can be imported from `backend-database`  
